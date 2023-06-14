@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>현재 나이 구하기</title>
+</head>
+<body>
+    <script>
+        // 출생년도를 입력하면 현재 나이를 알림창으로 알려주기
+        const birthYear = prompt('출생년도를 입력해주세요 :)')
+        const todayYear = new Date().getFullYear();
+
+        alert("본인의 현재 나이는 " + Number(todayYear - birthYear + 1) +"세입니다.");
+    </script>
+</body>
+</html>

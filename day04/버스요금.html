@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>버스요금</title>
+</head>
+<body>
+    <script>
+        // 어린이 : 7세 ~ 13세     청소년 : 14세 ~ 19세    성인 : 20세 이상
+        const CustomerAge = Number(prompt("고객의 나이를 입력해주세요."));
+        
+        if(CustomerAge < 7) {
+            alert("유아 요금은 무료입니다.")
+        } else if(CustomerAge >= 7 && CustomerAge <= 13) {
+            alert("어린이 요금은 카드 : 500원, 현금 : 500원 입니다.")
+        } else if(CustomerAge >= 14 && CustomerAge <= 19) {
+            alert("청소년 요금은 카드 : 870원, 현금 : 900원 입니다.")
+        } else {
+            alert("일반 요금은 카드 : 1,250원, 현금 : 1,300원 입니다.")
+        }
+    </script>
+</body>
+</html>

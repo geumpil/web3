@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 복숭아 : 한 바구니에 10개까지 들어감 복숭아 갯수만큼 바구니가 몇개 필요한가?
+
+        const peach = Number(prompt('복숭아 갯수를 입력하세요.'));
+        let basket = Math.floor(peach / 10);
+
+        if(peach % 10 !== 0) {
+            alert(`복숭아 ${peach}개에 필요한 바구니의 수는 ${basket + 1}개입니다.`);
+        } else {
+            alert(`복숭아 ${peach}개에 필요한 바구니의 수는 ${basket}개입니다.`);
+        }
+    </script>
+</body>
+</html>

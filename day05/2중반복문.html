@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2중반복문</title>
+    <style>
+        .container {
+            display: flex;
+            gap: 8px;
+        }
+        .container > div {
+            width: 20%;
+            height: 100px;
+            background-color: #aaa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        for(i = 0; i < 5; i++) {
+            document.write("<div class='container'>")
+            for(j = 0; j < 5; j++) {
+                document.write("<div>div</div>")
+            }
+            document.write("</div><br>")
+        }
+
+    </script>
+</body>
+</html>

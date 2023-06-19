@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구구단</title>
+    <style>
+        .text {
+            width: 100px;
+            font-size: 20px;
+            font-weight: bold;
+            color: cadetblue;
+            line-height: 50px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #dan {
+            padding: 0 10px;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+        }
+
+        #dan > h3 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        document.write("<div class='container'>")
+            for(let i = 1; i < 10; i++) {
+                document.write("<div id='dan'>")
+                document.write(`<h3>${i}단</h3>`)
+                for(let j = 1; j < 10; j++) {
+                    document.write(`<p>${i} x ${j} = ${i * j}</p>`)
+                }
+                document.write("</div>")
+            }
+        document.write("</div>")
+      
+    </script>
+</body>
+</html>

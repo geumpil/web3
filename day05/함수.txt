@@ -37,4 +37,4 @@ const 합계 = 더하기머신(1,2);
 
 function 더하기머신(a, b) {
   const 합계 = return a+b; <-- 함수 안에서 선언된 const는 함수 안에서만 사용가능!
-}
+}ㅁ

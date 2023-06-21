@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="가위">가위</button>
+    <button id="바위">바위</button>
+    <button id="보">보</button>
+
+    <script>
+        // 가위바위보 버튼을 눌렀을 때 컴퓨터는 랜덤하게 가위바위보 셋중 하나를 낸다.
+        // 내가 누른 버튼의 승무패 여부를 알림창에 표시하세요
+        const 가위버튼 = document.getElementById('가위');
+        const 바위버튼 = document.getElementById('바위');
+        const 보버튼 = document.getElementById('보');
+
+        const 컴퓨터선택 = Math.floor(Math.random()*3);
+
+        가위버튼.addEventListener('click', 가위내기);
+
+        function 가위내기() {
+            if(컴퓨터선택 == 0) {
+                alert('컴퓨터의 선택 : 가위<br>비겼습니다.');
+
+            } else if (컴퓨터선택 == 1) {
+                alert('컴퓨터의 선택 : 바위<br>졌습니다.');
+            }
+        }
+    </script>
+</body>
+</html>

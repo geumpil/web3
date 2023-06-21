@@ -21,4 +21,3 @@ document.getElementsByTagName('tag')
 
 Q. 쿼리셀렉터와 겟엘리먼트의 차이점?
 
-쿼리셀렉터 -> 이전에 있

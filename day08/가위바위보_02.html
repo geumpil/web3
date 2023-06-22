@@ -17,18 +17,61 @@
         const 바위버튼 = document.getElementById('바위');
         const 보버튼 = document.getElementById('보');
 
-        const 컴퓨터선택 = Math.floor(Math.random()*3);
+        let computer;
 
-        가위버튼.addEventListener('click', 가위내기);
+        function computerResult() {
+            computer = Math.floor(Math.random()*3);
+            if(computer === 0) {
+                alert('컴퓨터는 "가위"를 내었습니다.');
 
-        function 가위내기() {
-            if(컴퓨터선택 == 0) {
-                alert('컴퓨터의 선택 : 가위<br>비겼습니다.');
-
-            } else if (컴퓨터선택 == 1) {
-                alert('컴퓨터의 선택 : 바위<br>졌습니다.');
+            } else if (computer === 1) {
+                alert('컴퓨터는 "바위"를 내었습니다.');
+                
+            } else {
+                alert('컴퓨터는 "보"를 내었습니다.');
             }
         }
+
+        // 0 - 가위 , 1 - 바위 , 2 - 보    
+        가위버튼.addEventListener('click', ()=>{
+            computerResult();
+            if(computer === 0) {
+                alert('무승부');
+
+            } else if (computer === 1) {
+                alert('패배');
+                
+            } else {
+                alert('승리');
+            }
+        });
+
+        바위버튼.addEventListener('click', ()=>{
+            computerResult();
+            if(computer === 0) {
+                alert('승리');
+
+            } else if (computer === 1) {
+                alert('무승부');
+                
+            } else {
+                alert('패배');
+            }
+        });
+
+        보버튼.addEventListener('click', ()=>{
+            computerResult();
+            if(computer === 0) {
+                alert('패배');
+
+            } else if (computer === 1) {
+                alert('승리');
+                
+            } else {
+                alert('무승부');
+            }
+        });
+
     </script>
 </body>
 </html>

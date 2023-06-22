@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id='container' class="container hi">
+
+    </div>
+    <script>
+        const container = document.getElementById('container');
+
+        container.classList.add('good');    // 클래스 추가
+        container.classList.remove('hi');   // 클래스 삭제
+
+        container.classList.contains('good');   // 개체 안에 해당 클래스가 있는지 여부를 확인 (있으면 : T / 없으면 : F) -> 조건문에 주로 사용
+        container.classList.toggle('on-off');   // 클래스의 온/오프(on-off) 기능 -> 해당 클래스가 없으면 생성 있으면 삭제
+    </script>
+</body>
+</html>

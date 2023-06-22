@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+            margin: 0 auto;
+            width: 500px;
+            height: 500px;
+            background-color: #eee;
+            border: 1px solid #aaa;
+        }
+
+        button {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-image: url(gameimage.png);
+            background-size: auto 80%;
+            background-position: 9999px;
+            background-repeat: no-repeat;
+            background-color: white;
+        }
+
+        .scissorsButton {
+
+            background-position: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>가위바위보 게임</h1>
+        <div class="button-cont">
+            <button id="가위"></button>
+            <button id="바위"></button>
+            <button id="보"></button>
+        </div>
+        <div class="result-cont">
+            <p>컴퓨터의 결과는?</p>
+            <button></button>
+        </div>
+    </div>
+    <script>
+        // 가위바위보 버튼을 눌렀을 때 컴퓨터는 랜덤하게 가위바위보 셋중 하나를 낸다.
+        // 내가 누른 버튼의 승무패 여부를 알림창에 표시하세요
+        const 가위버튼 = document.getElementById('가위');
+        const 바위버튼 = document.getElementById('바위');
+        const 보버튼 = document.getElementById('보');
+
+        let computer;
+
+        가위버튼.classList.add('scissorsButton');
+        바위버튼.classList.add('rockButton');
+        보버튼.classList.add('paperButton');
+
+        // 0 - 가위 , 1 - 바위 , 2 - 보    
+        가위버튼.addEventListener('click', ()=>{
+            gameCompare(0);
+        });
+
+        바위버튼.addEventListener('click', ()=>{
+            gameCompare(1);
+        });
+
+        보버튼.addEventListener('click', ()=>{
+            gameCompare(2);
+        });
+
+        function gameCompare(userChoice) {
+            computerResult();
+            if(computer === userChoice) {
+                alert('무승부');
+
+            } else if ( (computer === 1 && userChoice === 0) || (computer === 2 && userChoice === 1) || (computer === 0 && userChoice === 2) ) {
+                alert('패배');
+                
+            } else {
+                alert('승리');
+            }
+
+            function computerResult() {
+                computer = Math.floor(Math.random()*3);
+                if(computer === 0) {
+                    alert('컴퓨터는 "가위"를 내었습니다.');
+
+                } else if (computer === 1) {
+                    alert('컴퓨터는 "바위"를 내었습니다.');
+                    
+                } else {
+                    alert('컴퓨터는 "보"를 내었습니다.');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

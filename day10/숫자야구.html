@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 배열하나 만들고
+        // 랜덤한 숫자(0~9)를 4개 넣어주세요.
+        const numBaseball = [];
+        for(let i = 0; i < 4; i++) {
+            let exNum;
+
+            while(true) {
+                exNum = Math.floor(Math.random()*10);
+                if(numBaseball(exNum) === -1) {
+                    break;
+                }
+            }
+            numBaseball.push(exNum);
+        }
+        
+    </script>
+</body>
+</html>

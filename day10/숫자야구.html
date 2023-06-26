@@ -4,9 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        
+    </style>
 </head>
 <body>
-    <script>
+    <div class="whole-wrapper">
+        <div class="game-board">
+            <div class="round">
+                <div class="status">
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                </div>
+                <div class="number-container">
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                </div>
+            </div>
+            <div class="round">
+                <div class="status">
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                </div>
+                <div class="number-container">
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                </div>
+            </div>
+            <div class="round">
+                <div class="status">
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                </div>
+                <div class="number-container">
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                </div>
+            </div>
+            <div class="round">
+                <div class="status">
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                </div>
+                <div class="number-container">
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                </div>
+            </div>
+            <div class="round">
+                <div class="status">
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                </div>
+                <div class="number-container">
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                </div>
+            </div>
+            <div class="round">
+                <div class="status">
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                </div>
+                <div class="number-container">
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                </div>
+            </div>
+            <div class="round">
+                <div class="status">
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                </div>
+                <div class="number-container">
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                </div>
+            </div>
+            <div class="round">
+                <div class="status">
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                    <div class="status-light"></div>
+                </div>
+                <div class="number-container">
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                    <div class="number-place"></div>
+                </div>
+            </div>
+        </div>
+        <div class="controller">
+            <button class="reset">리셋</button>
+            <div class="number-container">
+                <div class="number-place"></div>
+                <div class="number-place"></div>
+                <div class="number-place"></div>
+                <div class="number-place"></div>
+                <div class="number-place"></div>
+                <div class="number-place"></div>
+                <div class="number-place"></div>
+                <div class="number-place"></div>
+                <div class="number-place"></div>
+                <div class="number-place"></div>
+            </div>
+            <button class="submit">제출</button>
+        </div>
+    </div>
+
+    <!-- <script>
         // 배열하나 만들고
         // 랜덤한 숫자(0~9)를 4개 넣어주세요.
         const numBaseball = [];
@@ -15,13 +151,66 @@
 
             while(true) {
                 exNum = Math.floor(Math.random()*10);
-                if(numBaseball(exNum) === -1) {
+                if(numBaseball.indexOf(exNum) === -1) {
                     break;
                 }
             }
             numBaseball.push(exNum);
         }
+
+        for(let i = 0; i < 10; i++) {
+            document.write(`<div>${i + 1}번째 차례입니다.</div>`);
+
+            const strikeResult = baseballGame();
+
+            if(strikeResult === 4) {
+                console.log('정답입니다!');
+                break;
+            } else if(i === 9) {
+                console.log('패배하셨습니다.');
+                console.log(`정답은 ${numBaseball}입니다.`);
+            }
+        }
+
+        // console.log(numBaseball);
+
         
-    </script>
+        
+        
+
+        // console.log(numberInput);
+
+
+
+        function baseballGame() {
+            let numberInput = [];
+            let strike = 0;
+            let ball = 0;
+
+            for(let i = 1; i <= 4; i++) {
+                numberInput.push(Number(prompt(`${i}번째 숫자를 입력하세요`)));
+            }
+
+            for(let i = 0; i < 4; i++) {
+                if(numBaseball[i] === numberInput[i]) {
+                    strike++;
+                } 
+
+                for(let j = 0; j < 4; j++) {
+                    if(i !== j && numberInput[i] === numBaseball[j]) {
+                        ball++;
+                    }
+                }
+            }
+            
+            document.write(`<div>strike : ${strike} , ball : ${ball}</div>`);
+
+            // numberInput.pop()       -> 배열 맨 뒤의 요소를 꺼내쓴다(배열에서는 지워짐)
+            // numberInput.shift()     -> 배열 맨 앞의 요소를 꺼내쓴다(배열에서는 지워짐)
+            // numberInput.splice(몇번째부터, 몇개를지울건지)   
+
+        }
+        
+    </script> -->
 </body>
 </html>

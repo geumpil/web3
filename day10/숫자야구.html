@@ -343,24 +343,14 @@
         const rounds = document.getElementsByClassName('round');
         const resetButton = document.getElementById('reset');
         const submitButton = document.getElementById('submit');
+        const answer = document.querySelector('.cover')
 
         const numAnswer = [];   // 정답결과
         const numberInput = [];    // 숫자입력
         let count = 0;      // 순차
         let nowRound = 0;   // 현재 진행 라운드
         
-        for(let i = 0; i < 4; i++) {
-            let exNum;
-
-            while(true) {
-                exNum = Math.floor(Math.random()*10);
-                if(numAnswer.indexOf(exNum) === -1) {
-                    break;
-                }
-            }
-            numAnswer.push(exNum);
-
-        }
+        
         
         for(let i = 0; i < numberButtons.length; i++) {
             
@@ -383,37 +373,79 @@
             numberInput.splice(0);
         })
 
-        
-        
 
+
+
+        for(let i = 0; i < 4; i++) {
+            let exNum;
+
+            while(true) {
+                exNum = Math.floor(Math.random()*10);
+                if(numAnswer.indexOf(exNum) === -1) {
+                    break;
+                }
+            }
+            numAnswer.push(exNum);
+        }
+        console.log(numAnswer);
+        
+        // 값 제출 결과
         submitButton.addEventListener('click', () => {
+            if (numberInput.length === 4) {
+                const strikeResult = baseballGame();
+                console.log(strikeResult);
+                
+                for(let i = 0; i < 4; i++) {
+                    if(i < strikeResult[0]) {
+                        rounds[nowRound].children[0].children[i].classList.add(`strike`);
+                    } else if(i < strikeResult[0] + strikeResult[1]) {
+                        rounds[nowRound].children[0].children[i].classList.add(`ball`);
+                    }
+                }
+                
 
-            const strikeResult = baseballGame();
+                if(strikeResult[0] === 4) {
+                    resultOpen();
+                } else {
+                    rounds[nowRound].classList.remove(`now-play`);
+                    nowRound++;
+                    rounds[nowRound].classList.add(`now-play`);
+                    count = 0;
+                    numberInput.splice(0);
+                }
 
-            if(strikeResult === 4) {
-                // 승리
-            } else {
-                nowRound++;
-                numberInput.splice(0);
+                if(nowRound === 7) {
+                    resultOpen();
+                }
+
             }
+        })
 
-            if(nowRound === 7) {
-                // 패배
-            }
+        // 게임 결과를 통한 스트라이크, 볼 생성
+        function baseballGame() {
+            let strike = 0;
+            let ball = 0;
 
             for(let i = 0; i < 4; i++) {
                 if(numAnswer[i] === numberInput[i]) {
-                    rounds[nowRound].children[0].children[i].classList.add(`strike`);
+                    strike++;
                 } 
 
                 for(let j = 0; j < 4; j++) {
                     if(i !== j && numberInput[i] === numAnswer[j]) {
-                        rounds[nowRound].children[0].children[i].classList.add(`ball`);
+                        ball++;
                     }
                 }
             }
-        })
-        
+            return [strike, ball];
+        }
+
+        function resultOpen() {
+            answer.classList.add('open-answer');
+            for(let i = 0; i < 4; i++) {
+                answer.children[i].classList.add(`number${numAnswer[i]}`);
+            }
+        }
             
     </script>
 

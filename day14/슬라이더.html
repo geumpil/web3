@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .slider {
+            width: 200px;
+            height: 100px;
+            overflow: hidden;
+        }
+
+        .content-wrapper {
+            display: flex;
+            transition: 0.5s;
+        }
+
+        .button-wrapper {
+            width:200px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .content-list {
+            border: 1px solid #222;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <ul class="content-wrapper">
+            <li class="content-list">1</li>
+            <li class="content-list">2</li>
+            <li class="content-list">3</li>
+            <li class="content-list">4</li>
+        </ul>
+    </div>
+    <div class="button-wrapper">
+        <button id="prev">이전</button>
+        <button id="next">다음</button>
+    </div>
+    <script>
+        const slider = document.querySelector('.slider');
+        const sliderWidth = slider.clientWidth;
+        const sliderHeight = slider.clientHeight;
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const slideContent = document.querySelector('.content-wrapper');
+        let trans = 0;
+        let index = 0;
+
+        for(let i = 0; i < slideContent.childElementCount; i++) {
+            slideContent.children[i].style.width = `${sliderWidth}px`
+            slideContent.children[i].style.height = `${sliderHeight}px`
+        }
+
+        prevButton.addEventListener('click', () => {
+            index--;
+            위치적용();
+        })
+
+        nextButton.addEventListener('click', () => {
+            index++;
+            위치적용();
+        });
+
+        function 위치적용() {
+            slideContent.style.transform = `translateX(-${index * sliderWidth}px)`;
+        }
+
+    </script>
+</body>
+</html>

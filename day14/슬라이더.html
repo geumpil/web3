@@ -10,9 +10,20 @@
             padding: 0;
         }
 
+        section#test {
+            width: 1200px;
+            margin: 0 auto;
+        }
+
         .slider {
-            width: 200px;
-            height: 100px;
+            width: 100%;
+            height: 500px;
+            position: relative;
+        }
+
+        .slider-view {
+            width: 100%;
+            height: 100%;
             overflow: hidden;
         }
 
@@ -22,9 +33,24 @@
         }
 
         .button-wrapper {
-            width:200px;
-            display: flex;
-            justify-content: space-between;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide-prev {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(calc(-100% - 16px), -50%);
+        }
+
+        .slide-next {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translate(calc(100% + 16px), -50%);
         }
 
         .content-list {
@@ -40,19 +66,92 @@
     </style>
 </head>
 <body>
-    <div class="slider">
-        <ul class="content-wrapper">
-            <li class="content-list">1</li>
-            <li class="content-list">2</li>
-            <li class="content-list">3</li>
-            <li class="content-list">4</li>
-        </ul>
-    </div>
-    <div class="button-wrapper">
-        <button id="prev">이전</button>
-        <button id="next">다음</button>
-    </div>
+    <section id="test">
+        <div class="slider">
+            <div class="content-list">1</div>
+            <div class="content-list">2</div>
+            <div class="content-list">3</div>
+            <div class="content-list">4</div>
+        </div> 
+<!--
+        <div class="slider">
+            <div class="slider-view">
+                <div class="content-wrapper">
+                    <div class="content-list">1</div>
+                    <div class="content-list">2</div>
+                    <div class="content-list">3</div>
+                    <div class="content-list">4</div>
+                </div>
+            </div>
+            <div class="buttons-wrapper">
+                <button class="slide-prev">이전</button>
+                <button class="slide-next">다음</button>
+            </div>
+        </div>
+-->        
+    </section>
     <script>
+
+
+        function makeNode(tagName, className) {
+            const node = document.createElement(tagName);
+            node.classList.add(className)
+            return node;
+        }
+
+        const slider = document.querySelector('.slider');
+        const sliderView = makeNode('div', 'slider-view');
+        const buttonsWrapper = makeNode('div', 'buttons-wrapper');
+        const contentWrapper = makeNode('div', 'content-wrapper');
+        const buttonPrev = makeNode('button', 'slide-prev');
+        const prevInner = document.createTextNode('이전');
+        const buttonNext = makeNode('button', 'slide-next');
+        const nextInner = document.createTextNode('다음');
+        const contentLists = [];
+        const sliderWidth = slider.clientWidth;
+        const sliderHeight = slider.clientHeight;
+        let index = 0;
+
+        for (let i = 0; i < slider.childElementCount; i++) {
+            contentLists[i] = slider.children[i];
+        }
+
+        slider.appendChild(sliderView);
+        slider.appendChild(buttonsWrapper);
+        sliderView.appendChild(contentWrapper);
+        
+        for(let i = 0; i < contentLists.length; i++) {
+            contentWrapper.appendChild(contentLists[i]);    
+        }
+
+        buttonsWrapper.appendChild(buttonPrev);
+        buttonPrev.appendChild(prevInner);
+        buttonsWrapper.appendChild(buttonNext);
+        buttonNext.appendChild(nextInner);
+
+
+        for(let i = 0; i < contentWrapper.childElementCount; i++) {
+            contentWrapper.children[i].style.width = `${sliderWidth}px`
+            contentWrapper.children[i].style.height = `${sliderHeight}px`
+        }
+
+        buttonPrev.addEventListener('click', () => {
+            index--;
+            위치적용();
+        })
+
+        buttonNext.addEventListener('click', () => {
+            index++;
+            위치적용();
+        });
+
+        function 위치적용() {
+            contentWrapper.style.transform = `translateX(-${index * sliderWidth}px)`;
+        }
+
+    </script>
+
+    <!-- <script>
         const slider = document.querySelector('.slider');
         const sliderWidth = slider.clientWidth;
         const sliderHeight = slider.clientHeight;
@@ -81,6 +180,6 @@
             slideContent.style.transform = `translateX(-${index * sliderWidth}px)`;
         }
 
-    </script>
+    </script> -->
 </body>
 </html>

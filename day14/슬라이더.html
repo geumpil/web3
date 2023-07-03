@@ -31,6 +31,27 @@
             display: flex;
             transition: 0.5s;
         }
+ 
+        .dot-buttons {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: lightgray;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background-color: gray;
+        }
 
         .button-wrapper {
             position: absolute;
@@ -63,6 +84,7 @@
             font-weight: bold;
             flex-shrink: 0;
         }
+
     </style>
 </head>
 <body>
@@ -82,6 +104,12 @@
                     <div class="content-list">3</div>
                     <div class="content-list">4</div>
                 </div>
+            </div>
+            <div class="dot-buttons">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
             </div>
             <div class="buttons-wrapper">
                 <button class="slide-prev">이전</button>
@@ -110,7 +138,10 @@
         const contentLists = [];
         const sliderWidth = slider.clientWidth;
         const sliderHeight = slider.clientHeight;
-        let index = 0;
+        const viewContentsCount = 1;
+        let index = 0 + viewContentsCount;
+
+
 
         for (let i = 0; i < slider.childElementCount; i++) {
             contentLists[i] = slider.children[i];
@@ -135,19 +166,62 @@
             contentWrapper.children[i].style.height = `${sliderHeight}px`
         }
 
+
+        const cloneFirst = contentLists[0].cloneNode(true);
+        const cloneLast = contentLists[contentLists.length-1].cloneNode(true);
+
+        contentWrapper.appendChild(cloneFirst);
+        contentWrapper.insertBefore(cloneLast, contentWrapper.firstElementChild);
+        
+
+
         buttonPrev.addEventListener('click', () => {
             index--;
             위치적용();
+            if(index < 0) {
+                index = contentLists.length -1;
+            }
         })
 
         buttonNext.addEventListener('click', () => {
             index++;
             위치적용();
+            if(index === 5) {
+                setTimeout(() => {
+                   index = 1; 
+                   위치적용(); 
+                }, 500);
+            }
+            위치적용();
         });
+     const dotButtons = makeNode('div','dot-buttons');
+
+       
+        for(let i = 0; i < contentLists.length; i++) {
+            const dot = makeNode('div', 'dot');
+            dotButtons.appendChild(dot);
+
+            dot.addEventListener('click', () => {
+                index = i;
+                위치적용();
+            });
+        }
+
+        // 슬라이드 버튼 만들기
+   
+        slider.appendChild(dotButtons);
+
+
+        위치적용();
 
         function 위치적용() {
+            for(let i = 0; i < dotButtons.childElementCount; i++) {
+                dotButtons.children[i].classList.remove('active');
+            }
+            dotButtons.children[index-viewContentsCount].classList.add('active');
             contentWrapper.style.transform = `translateX(-${index * sliderWidth}px)`;
         }
+
 
     </script>
 

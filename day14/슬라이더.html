@@ -94,6 +94,8 @@
             <div class="content-list">2</div>
             <div class="content-list">3</div>
             <div class="content-list">4</div>
+            <div class="content-list">5</div>
+            <div class="content-list">6</div>
         </div> 
 <!--
         <div class="slider">
@@ -120,140 +122,160 @@
     </section>
     <script>
 
-
-        function makeNode(tagName, className) {
-            const node = document.createElement(tagName);
-            node.classList.add(className)
-            return node;
-        }
-
         const slider = document.querySelector('.slider');
-        const sliderView = makeNode('div', 'slider-view');
-        const buttonsWrapper = makeNode('div', 'buttons-wrapper');
-        const contentWrapper = makeNode('div', 'content-wrapper');
-        const buttonPrev = makeNode('button', 'slide-prev');
-        const prevInner = document.createTextNode('이전');
-        const buttonNext = makeNode('button', 'slide-next');
-        const nextInner = document.createTextNode('다음');
-        const contentLists = [];
-        const sliderWidth = slider.clientWidth;
-        const sliderHeight = slider.clientHeight;
-        const viewContentsCount = 1;
-        let index = 0 + viewContentsCount;
+
+        createSlide(slider, 3, 500, 8);
+
+        function createSlide(slider, viewContentsCount, slideSpeed, flexGap) {
 
 
+            const sliderView = makeNode('div', 'slider-view');
+            const buttonsWrapper = makeNode('div', 'buttons-wrapper');
+            const contentWrapper = makeNode('div', 'content-wrapper');
+            const buttonPrev = makeNode('button', 'slide-prev');
+            const buttonNext = makeNode('button', 'slide-next');
+            const prevInner = document.createTextNode('이전');
+            const nextInner = document.createTextNode('다음');
+            const contentLists = [];
+            const sliderWidth = slider.clientWidth;
+            const sliderHeight = slider.clientHeight;
+            const viewContentsCount = 2;
+            const slideSpeed = 500;
+            let index = 0 + viewContentsCount;
+            let moveCheck = true;
+            const gap = viewContentsCount === 1 ? 0 : flexGap;
 
-        for (let i = 0; i < slider.childElementCount; i++) {
-            contentLists[i] = slider.children[i];
-        }
+            // 슬라이드 배열에 담아 Wrapper에 배치
 
-        slider.appendChild(sliderView);
-        slider.appendChild(buttonsWrapper);
-        sliderView.appendChild(contentWrapper);
+            for (let i = 0; i < slider.childElementCount; i++) {
+                contentLists[i] = slider.children[i];
+                contentLists[i].classList.add('content');
+            }
+
+            for(let i = 0; i < contentLists.length; i++) {
+                contentWrapper.appendChild(contentLists[i]);    
+            }
+
+            // 슬라이더 넓이, 높이 지정
+            const contentWidth = (sliderWidth/viewContentsCount) - gap*(viewContentsCount-1)/viewContentsCount;
+
+            for(let i = 0; i < contentWrapper.childElementCount; i++) {
+                contentWrapper.children[i].style.width = `${contentWidth}px`
+                contentWrapper.children[i].style.height = `${sliderHeight}px`
+            }
+
+            slider.appendChild(sliderView);
+            slider.appendChild(buttonsWrapper);
+            sliderView.appendChild(contentWrapper);        
+            buttonsWrapper.appendChild(buttonPrev);
+            buttonPrev.appendChild(prevInner);
+            buttonsWrapper.appendChild(buttonNext);
+            buttonNext.appendChild(nextInner);
+
+            // clone 복제 생성
+
+            for(let i = contentLists.length - 1; i > contentLists.length -1 - viewContentsCount; i--) {
+                const cloneBack = contentLists[i].cloneNode(true);
+                contentWrapper.insertBefore(cloneBack, contentWrapper.firstElementChild);
+            }
+
+            for(let i = 0; i < viewContentsCount; i++) {
+                const cloneFront = contentLists[i].cloneNode(true);
+                contentWrapper.appendChild(cloneFront);
+            } 
+            
+
+            
+
+            
+            
+            
+            // prev , next 버튼 적용
+
+            buttonPrev.addEventListener('click', () => {
+                if(moveCheck) {
+                    moveCheck = false;
+
+                    index--;
+
+                    위치적용(500);
+                    setTimeout(() => {
+                        if(index < viewContentsCount) {
+                            index = contentLists.length + viewContentsCount -1;
+                            위치적용(0);
+                        }
+                        moveCheck = true;
+                    }, 500);
+                }
+            })
+
+            buttonNext.addEventListener('click', () => {
+                if(moveCheck) {
+                    moveCheck = false;
+
+                    index++;
+
+                    위치적용(500);
+                    setTimeout(() => {
+                        if(index > contentLists.length + viewContentsCount -1) {
+                        index = viewContentsCount; 
+                        위치적용(0); 
+                        }
+                        moveCheck = true;
+                    }, 500);
+                }
+            })
+
+            
+            //  닷 버튼 만들기
+
+            const dotButtons = makeNode('div','dot-buttons');
+
         
-        for(let i = 0; i < contentLists.length; i++) {
-            contentWrapper.appendChild(contentLists[i]);    
+            for(let i = 0; i < contentLists.length; i++) {
+                const dot = makeNode('div', 'dot');
+                dotButtons.appendChild(dot);
+
+                dot.addEventListener('click', () => {
+                    index = i + viewContentsCount;
+                    위치적용(slideSpeed);
+                });
+            }
+            slider.appendChild(dotButtons);
+
+            위치적용();
+
+            // 원래는 0~3까지
+            // 앞뒤로 1개가 늘어나면서 총 인덱스는 0~5까지 
+            // 실제 슬라이드의 인덱스는 1~4까지
+            // dotButtons[4]는 0~3까지의 범위
+            // index = 5, viewContentsCount = 1 , index - viewContentsCount = 4
+
+            function 위치적용(time) {
+                for(let i = 0; i < dotButtons.childElementCount; i++) {
+                    dotButtons.children[i].classList.remove('active');
+                }
+                if(index < viewContentsCount) {
+                    dotButtons.lastElementChild.classList.add('active');
+                } else if(index > contentLists.length + viewContentsCount -1) {
+                    dotButtons.firstElementChild.classList.add('active');
+                }else {
+                    dotButtons.children[index-viewContentsCount].classList.add('active');
+                }
+                contentWrapper.style.transform = `translateX(-${index * sliderWidth/viewContentsCount}px)`;
+                contentWrapper.style.transition = `${time}ms`;
+            }
+
+            // 노드 생성
+
+            function makeNode(tagName, className) {
+                const node = document.createElement(tagName);
+                node.classList.add(className)
+                return node;
+            }
         }
 
-        buttonsWrapper.appendChild(buttonPrev);
-        buttonPrev.appendChild(prevInner);
-        buttonsWrapper.appendChild(buttonNext);
-        buttonNext.appendChild(nextInner);
-
-
-        for(let i = 0; i < contentWrapper.childElementCount; i++) {
-            contentWrapper.children[i].style.width = `${sliderWidth}px`
-            contentWrapper.children[i].style.height = `${sliderHeight}px`
-        }
-
-
-        const cloneFirst = contentLists[0].cloneNode(true);
-        const cloneLast = contentLists[contentLists.length-1].cloneNode(true);
-
-        contentWrapper.appendChild(cloneFirst);
-        contentWrapper.insertBefore(cloneLast, contentWrapper.firstElementChild);
         
-
-
-        buttonPrev.addEventListener('click', () => {
-            index--;
-            위치적용();
-            if(index < 0) {
-                index = contentLists.length -1;
-            }
-        })
-
-        buttonNext.addEventListener('click', () => {
-            index++;
-            위치적용();
-            if(index === 5) {
-                setTimeout(() => {
-                   index = 1; 
-                   위치적용(); 
-                }, 500);
-            }
-            위치적용();
-        });
-     const dotButtons = makeNode('div','dot-buttons');
-
-       
-        for(let i = 0; i < contentLists.length; i++) {
-            const dot = makeNode('div', 'dot');
-            dotButtons.appendChild(dot);
-
-            dot.addEventListener('click', () => {
-                index = i;
-                위치적용();
-            });
-        }
-
-        // 슬라이드 버튼 만들기
-   
-        slider.appendChild(dotButtons);
-
-
-        위치적용();
-
-        function 위치적용() {
-            for(let i = 0; i < dotButtons.childElementCount; i++) {
-                dotButtons.children[i].classList.remove('active');
-            }
-            dotButtons.children[index-viewContentsCount].classList.add('active');
-            contentWrapper.style.transform = `translateX(-${index * sliderWidth}px)`;
-        }
-
-
     </script>
-
-    <!-- <script>
-        const slider = document.querySelector('.slider');
-        const sliderWidth = slider.clientWidth;
-        const sliderHeight = slider.clientHeight;
-        const prevButton = document.getElementById('prev');
-        const nextButton = document.getElementById('next');
-        const slideContent = document.querySelector('.content-wrapper');
-        let trans = 0;
-        let index = 0;
-
-        for(let i = 0; i < slideContent.childElementCount; i++) {
-            slideContent.children[i].style.width = `${sliderWidth}px`
-            slideContent.children[i].style.height = `${sliderHeight}px`
-        }
-
-        prevButton.addEventListener('click', () => {
-            index--;
-            위치적용();
-        })
-
-        nextButton.addEventListener('click', () => {
-            index++;
-            위치적용();
-        });
-
-        function 위치적용() {
-            slideContent.style.transform = `translateX(-${index * sliderWidth}px)`;
-        }
-
-    </script> -->
 </body>
 </html>

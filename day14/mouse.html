@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .place {
+            width: 50%;
+            height: 50vh;
+            margin: 150px auto;
+            background-color: bisque;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="place">
+
+    </div>
+    <script>
+        const place = document.querySelector('.place');
+        let clickX, clickY;
+        let isClicked = false;
+        
+        place.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            isClicked = true;
+            clickX = e.clientX;
+            clickY = e.clientY;
+
+            console.log(clickX, clickY);
+        })
+
+        place.addEventListener('mousemove', (e) => {
+            if(isClicked === true) {
+                const nowX = e.clientX
+                const nowY = e.clientY
+
+                place.innerText = `X 이동 : ${nowX - clickX}, Y 이동 : ${nowY - clickY}`
+            }
+        })
+
+        place.addEventListener('mouseup', (e) => {
+            isClicked = false;
+        })
+        
+
+    </script>
+</body>
+</html>

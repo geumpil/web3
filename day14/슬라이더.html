@@ -11,7 +11,7 @@
         }
 
         section#test {
-            width: 1200px;
+            width: 80%;
             margin: 0 auto;
         }
 
@@ -124,9 +124,9 @@
 
         const slider = document.querySelector('.slider');
 
-        createSlide(slider, 3, 500, 8);
+        // createSlide(slider, 3, 500, 8);
 
-        function createSlide(slider, viewContentsCount, slideSpeed, flexGap) {
+        // function createSlide(slider, viewContentsCount, slideSpeed, flexGap) {
 
 
             const sliderView = makeNode('div', 'slider-view');
@@ -136,33 +136,58 @@
             const buttonNext = makeNode('button', 'slide-next');
             const prevInner = document.createTextNode('이전');
             const nextInner = document.createTextNode('다음');
-            const contentLists = [];
-            const sliderWidth = slider.clientWidth;
+            const contentLists = [];       
             const sliderHeight = slider.clientHeight;
             const viewContentsCount = 2;
             const slideSpeed = 500;
+            let sliderWidth;
+            let contentWidth;
             let index = 0 + viewContentsCount;
             let moveCheck = true;
-            const gap = viewContentsCount === 1 ? 0 : flexGap;
+            const gap = viewContentsCount === 1 ? 0 : 8;
 
             // 슬라이드 배열에 담아 Wrapper에 배치
 
             for (let i = 0; i < slider.childElementCount; i++) {
                 contentLists[i] = slider.children[i];
-                contentLists[i].classList.add('content');
+                // contentLists[i].classList.add('content-list');
             }
 
             for(let i = 0; i < contentLists.length; i++) {
                 contentWrapper.appendChild(contentLists[i]);    
             }
 
-            // 슬라이더 넓이, 높이 지정
-            const contentWidth = (sliderWidth/viewContentsCount) - gap*(viewContentsCount-1)/viewContentsCount;
+             //  닷 버튼 만들기
 
-            for(let i = 0; i < contentWrapper.childElementCount; i++) {
-                contentWrapper.children[i].style.width = `${contentWidth}px`
-                contentWrapper.children[i].style.height = `${sliderHeight}px`
+            const dotButtons = makeNode('div','dot-buttons');
+
+            for(let i = 0; i < contentLists.length; i++) {
+                const dot = makeNode('div', 'dot');
+                dotButtons.appendChild(dot);
+
+                dot.addEventListener('click', () => {
+                    index = i + viewContentsCount;
+                    위치적용(slideSpeed);
+                });
             }
+            slider.appendChild(dotButtons);
+
+            // 슬라이더 넓이, 높이 지정
+            사이즈지정();
+
+            window.addEventListener('resize', 사이즈지정);
+
+            function 사이즈지정() {
+                sliderWidth = slider.clientWidth;
+                contentWidth = (sliderWidth/viewContentsCount) - gap*(viewContentsCount-1)/viewContentsCount;
+
+                for(let i = 0; i < contentWrapper.childElementCount; i++) {
+                    contentWrapper.children[i].style.width = `${contentWidth}px`
+                    contentWrapper.children[i].style.height = `${sliderHeight}px`
+                }
+                위치적용();
+            }
+            contentWrapper.style.gap = `${gap}px`
 
             slider.appendChild(sliderView);
             slider.appendChild(buttonsWrapper);
@@ -184,66 +209,14 @@
                 contentWrapper.appendChild(cloneFront);
             } 
             
+            // prev , next 버튼 활성화
+
+            buttonPrev.addEventListener('click', prev)
+
+            buttonNext.addEventListener('click', next)
 
             
 
-            
-            
-            
-            // prev , next 버튼 적용
-
-            buttonPrev.addEventListener('click', () => {
-                if(moveCheck) {
-                    moveCheck = false;
-
-                    index--;
-
-                    위치적용(500);
-                    setTimeout(() => {
-                        if(index < viewContentsCount) {
-                            index = contentLists.length + viewContentsCount -1;
-                            위치적용(0);
-                        }
-                        moveCheck = true;
-                    }, 500);
-                }
-            })
-
-            buttonNext.addEventListener('click', () => {
-                if(moveCheck) {
-                    moveCheck = false;
-
-                    index++;
-
-                    위치적용(500);
-                    setTimeout(() => {
-                        if(index > contentLists.length + viewContentsCount -1) {
-                        index = viewContentsCount; 
-                        위치적용(0); 
-                        }
-                        moveCheck = true;
-                    }, 500);
-                }
-            })
-
-            
-            //  닷 버튼 만들기
-
-            const dotButtons = makeNode('div','dot-buttons');
-
-        
-            for(let i = 0; i < contentLists.length; i++) {
-                const dot = makeNode('div', 'dot');
-                dotButtons.appendChild(dot);
-
-                dot.addEventListener('click', () => {
-                    index = i + viewContentsCount;
-                    위치적용(slideSpeed);
-                });
-            }
-            slider.appendChild(dotButtons);
-
-            위치적용();
 
             // 원래는 0~3까지
             // 앞뒤로 1개가 늘어나면서 총 인덱스는 0~5까지 
@@ -262,7 +235,8 @@
                 }else {
                     dotButtons.children[index-viewContentsCount].classList.add('active');
                 }
-                contentWrapper.style.transform = `translateX(-${index * sliderWidth/viewContentsCount}px)`;
+
+                contentWrapper.style.transform = `translateX(-${index * (contentWidth + gap)}px)`;
                 contentWrapper.style.transition = `${time}ms`;
             }
 
@@ -273,7 +247,49 @@
                 node.classList.add(className)
                 return node;
             }
-        }
+
+            // 이전, 다음 버튼 기능 생성
+            function prev() {
+                if(moveCheck) {
+                    moveCheck = false;
+
+                    index--;
+
+                    위치적용(500);
+                    setTimeout(() => {
+                        if(index < viewContentsCount) {
+                            index = contentLists.length + viewContentsCount -1;
+                            위치적용(0);
+                        }
+                        moveCheck = true;
+                    }, 500);
+                }
+            }
+
+            function next() {
+                if(moveCheck) {
+                    moveCheck = false;
+
+                    index++;
+
+                    위치적용(500);
+                    setTimeout(() => {
+                        if(index > contentLists.length + viewContentsCount -1) {
+                        index = viewContentsCount; 
+                        위치적용(0); 
+                        }
+                        moveCheck = true;
+                    }, 500);
+                }
+            }
+
+            // 자동 슬라이드 적용
+            setInterval(() => {
+                next();
+            }, 3000);
+
+            
+        // }
 
         
     </script>
